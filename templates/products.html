@@ -1,0 +1,371 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Products | Ruhi Dairy
+{% endblock %}
+
+{% block content %}
+
+<section class="products-hero">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            RUHI DAIRY
+        </span>
+
+        <h1>
+            Our Products
+        </h1>
+
+        <p>
+            Fresh dairy products for your everyday needs.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <!-- SEARCH -->
+
+        <form method="GET" class="search-box">
+
+            <input
+                type="text"
+                name="search"
+                value="{{ search_query }}"
+                placeholder="Search milk, curd, paneer..."
+            >
+
+            <button type="submit">
+                🔍 Search
+            </button>
+
+        </form>
+
+
+        <!-- PRODUCTS -->
+
+        <div class="product-grid">
+
+            {% for product in products %}
+
+            {% with variants=product.variants.all %}
+
+            <article
+                class="product-card variant-product"
+                data-group="{{ forloop.counter }}"
+            >
+
+                <!-- PRODUCT IMAGE -->
+
+                <div class="product-image">
+
+                    {% if product.image %}
+
+                    <img
+                        src="{{ product.image.url }}"
+                        alt="{{ product.name }}"
+                        class="variant-image"
+                    >
+
+                    {% else %}
+
+                    <div class="placeholder">
+                        🥛
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PRODUCT INFORMATION -->
+
+                <div class="product-info">
+
+                    <span class="category">
+                        {{ product.category }}
+                    </span>
+
+
+                    <h3>
+                        {{ product.name }}
+                    </h3>
+
+
+                    {% if product.description %}
+
+                    <p>
+                        {{ product.description }}
+                    </p>
+
+                    {% endif %}
+
+
+                    <!-- VARIANT TITLE -->
+
+                    {% if variants %}
+
+                    <div class="variant-heading">
+                        Select quantity
+                    </div>
+
+
+                    <!-- VARIANTS -->
+
+                    <div class="variant-options">
+
+                        {% for variant in variants %}
+
+                        <button
+                            type="button"
+                            class="variant-option {% if forloop.first %}selected{% endif %}"
+                            data-variant-id="{{ variant.id }}"
+                            data-price="{{ variant.price }}"
+                            data-stock="{{ variant.stock_quantity }}"
+                            onclick="selectVariant(this)"
+                        >
+
+                            <span>
+                                {{ variant.pack_size }}
+                            </span>
+
+                            <small>
+                                ₹{{ variant.price }}
+                            </small>
+
+                        </button>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- SELECTED PRODUCT DETAILS -->
+
+                    <div class="selected-product-info">
+
+                        <div class="selected-price">
+
+                            ₹<span class="price-value">
+                                {{ variants.0.price }}
+                            </span>
+
+                        </div>
+
+
+                        {% if variants.0.stock_quantity > 0 %}
+
+                        <span class="stock-badge available">
+
+                            🟢
+                            <span class="stock-value">
+                                {{ variants.0.stock_quantity }}
+                            </span>
+                            available
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="stock-badge unavailable">
+                            🔴 Out of Stock
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+                    {% else %}
+
+                    <p class="no-variants">
+                        No pack sizes available yet.
+                    </p>
+
+                    {% endif %}
+
+
+                    <!-- ADD TO CART -->
+
+                    {% if variants.0.stock_quantity > 0 %}
+
+                    <a
+                        href="{% url 'add_to_cart' variants.0.id %}"
+                        class="add-cart-btn variant-cart-btn"
+                    >
+                        🛒 Add to Cart
+                    </a>
+
+                    {% else %}
+
+                    <button
+                        type="button"
+                        class="add-cart-btn disabled variant-cart-btn"
+                        disabled
+                    >
+                        Out of Stock
+                    </button>
+
+                    {% endif %}
+
+                </div>
+
+            </article>
+
+            {% endwith %}
+
+
+            {% empty %}
+
+            <!-- NO PRODUCTS -->
+
+            <div class="no-products">
+
+                <div>
+                    🥛
+                </div>
+
+                <h2>
+                    No products found
+                </h2>
+
+                <p>
+                    Try searching for another product.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- VARIANT JAVASCRIPT -->
+
+<script>
+
+function selectVariant(button) {
+
+    const card = button.closest('.variant-product');
+
+    const variantId = button.dataset.variantId;
+
+    const price = button.dataset.price;
+
+    const stock = parseInt(
+        button.dataset.stock || '0'
+    );
+
+
+    /* REMOVE OLD SELECTED */
+
+    card.querySelectorAll('.variant-option').forEach(function(option) {
+
+        option.classList.remove('selected');
+
+    });
+
+
+    /* SELECT CURRENT */
+
+    button.classList.add('selected');
+
+
+    /* UPDATE PRICE */
+
+    const priceElement = card.querySelector('.price-value');
+
+    if (priceElement) {
+
+        priceElement.textContent = price;
+
+    }
+
+
+    /* UPDATE STOCK */
+
+    const stockBadge = card.querySelector('.stock-badge');
+
+
+    /* UPDATE CART BUTTON */
+
+    let cartButton = card.querySelector('.variant-cart-btn');
+
+
+    if (stock > 0) {
+
+        /* STOCK AVAILABLE */
+
+        if (stockBadge) {
+
+            stockBadge.className =
+                'stock-badge available';
+
+            stockBadge.innerHTML =
+                '🟢 <span class="stock-value">'
+                + stock +
+                '</span> available';
+
+        }
+
+
+        /* ENABLE BUTTON */
+
+        cartButton.classList.remove('disabled');
+
+        cartButton.removeAttribute('disabled');
+
+        cartButton.href =
+            '/cart/add/' + variantId + '/';
+
+        cartButton.textContent =
+            '🛒 Add to Cart';
+
+    }
+
+    else {
+
+        /* OUT OF STOCK */
+
+        if (stockBadge) {
+
+            stockBadge.className =
+                'stock-badge unavailable';
+
+            stockBadge.innerHTML =
+                '🔴 Out of Stock';
+
+        }
+
+
+        /* DISABLE BUTTON */
+
+        cartButton.classList.add('disabled');
+
+        cartButton.removeAttribute('href');
+
+        cartButton.setAttribute(
+            'disabled',
+            'disabled'
+        );
+
+        cartButton.textContent =
+            'Out of Stock';
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

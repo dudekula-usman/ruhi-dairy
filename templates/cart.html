@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Your Cart | Ruhi Dairy
+{% endblock %}
+
+{% block content %}
+
+
+<section class="products-hero">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            RUHI DAIRY
+        </span>
+
+        <h1>
+            Your Cart
+        </h1>
+
+        <p>
+            Review your selected dairy products.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<section class="section">
+
+    <div class="container">
+
+
+        {% if cart_items %}
+
+
+        <div class="cart-container">
+
+
+            {% for item in cart_items %}
+
+
+            <div class="cart-item">
+
+
+                <div class="cart-image">
+
+                    {% if item.product.image %}
+
+                    <img
+                        src="{{ item.product.image.url }}"
+                        alt="{{ item.product.name }}"
+                    >
+
+                    {% else %}
+
+                    <div class="placeholder">
+                        🥛
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <div class="cart-info">
+
+                    <span class="category">
+                        {{ item.product.category }}
+                    </span>
+
+                    <h2>
+                        {{ item.product.name }}
+                    </h2>
+
+                    <p>
+                        📦 {{ item.variant.pack_size }}
+                    </p>
+
+                    <strong>
+                        ₹{{ item.variant.price }}
+                    </strong>
+
+                </div>
+
+
+
+                <div class="cart-controls">
+
+
+                    <div class="quantity-controls">
+
+                        <a
+                            href="{% url 'decrease_cart' item.variant.id %}"
+                        >
+                            −
+                        </a>
+
+                        <span>
+                            {{ item.quantity }}
+                        </span>
+
+                        <a
+                            href="{% url 'increase_cart' item.variant.id %}"
+                        >
+                            +
+                        </a>
+
+                    </div>
+
+
+                    <strong class="subtotal">
+                        ₹{{ item.subtotal }}
+                    </strong>
+
+
+                    <a
+                        href="{% url 'remove_from_cart' item.variant.id %}"
+                        class="remove-cart"
+                    >
+                        Remove
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+            {% endfor %}
+
+
+
+            <div class="cart-summary">
+
+                <div>
+
+                    <span>
+                        Cart Total
+                    </span>
+
+                    <strong>
+                        ₹{{ total }}
+                    </strong>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="checkout-btn"
+                    onclick="alert('Checkout will be available in the next stage.')"
+                >
+                    Proceed to Checkout →
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="empty-cart">
+
+            <div class="empty-cart-icon">
+                🛒
+            </div>
+
+            <h2>
+                Your cart is empty
+            </h2>
+
+            <p>
+                Looks like you haven't added
+                anything yet.
+            </p>
+
+            <a
+                href="{% url 'products' %}"
+                class="btn btn-primary"
+            >
+                Explore Products
+            </a>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+</section>
+
+
+{% endblock %}

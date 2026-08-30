@@ -1,0 +1,762 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Ruhi Dairy | Fresh & Pure
+{% endblock %}
+
+{% block content %}
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="ruhi-home-hero">
+
+    <div class="ruhi-home-hero-image">
+
+        <img
+            src="/media/images/ruhi-hero.jpg"
+            alt="Ruhi Dairy farm"
+        >
+
+    </div>
+
+
+    <div class="ruhi-hero-overlay"></div>
+
+
+    <div class="ruhi-home-hero-content">
+
+        <span class="ruhi-home-eyebrow">
+            PURE • FRESH • NATURAL
+        </span>
+
+        <h1>
+            Pure Goodness,<br>
+            From Our Farm<br>
+            To Your <span>Home.</span>
+        </h1>
+
+        <p>
+            At Ruhi Dairy, we believe in purity at every step.
+            From healthy livestock to hygienically processed dairy
+            products, we bring fresh goodness to your everyday table.
+        </p>
+
+
+        <div class="ruhi-home-buttons">
+
+            <a
+                href="{% url 'products' %}"
+                class="ruhi-home-primary"
+            >
+                Browse Products
+                <span>→</span>
+            </a>
+
+            <a
+                href="#our-story"
+                class="ruhi-home-secondary"
+            >
+                Our Story
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     TRUST STRIP
+===================================================== -->
+
+<section class="ruhi-trust-strip">
+
+    <div class="ruhi-trust-item">
+
+        <div class="ruhi-trust-icon">
+            🌿
+        </div>
+
+        <div>
+
+            <h3>
+                100% Natural
+            </h3>
+
+            <p>
+                Fresh dairy goodness
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="ruhi-trust-item">
+
+        <div class="ruhi-trust-icon">
+            🛡️
+        </div>
+
+        <div>
+
+            <h3>
+                Hygienic
+            </h3>
+
+            <p>
+                Carefully processed
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="ruhi-trust-item">
+
+        <div class="ruhi-trust-icon">
+            🐄
+        </div>
+
+        <div>
+
+            <h3>
+                Farm Fresh
+            </h3>
+
+            <p>
+                Sourced with care
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="ruhi-trust-item">
+
+        <div class="ruhi-trust-icon">
+            ❤️
+        </div>
+
+        <div>
+
+            <h3>
+                Made With Care
+            </h3>
+
+            <p>
+                For every family
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FEATURED PRODUCTS
+===================================================== -->
+
+<section class="ruhi-featured-products">
+
+    <div class="ruhi-section-heading">
+
+        <span class="ruhi-small-heading">
+            OUR PRODUCTS
+        </span>
+
+        <h2>
+            Popular Picks
+        </h2>
+
+        <p>
+            A taste of what's fresh at Ruhi Dairy right now.
+        </p>
+
+    </div>
+
+
+    <div class="container">
+
+        <div class="product-grid">
+
+            {% for product in products %}
+
+            {% with variants=product.variants.all %}
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    {% if product.image %}
+
+                    <img
+                        src="{{ product.image.url }}"
+                        alt="{{ product.name }}"
+                    >
+
+                    {% else %}
+
+                    <div class="placeholder">
+                        🥛
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <span class="category">
+                        {{ product.category }}
+                    </span>
+
+                    <h3>
+                        {{ product.name }}
+                    </h3>
+
+                    {% if variants %}
+
+                    <p>
+                        Starting at ₹{{ variants.0.price }}
+                    </p>
+
+                    {% endif %}
+
+                    <a
+                        href="{% url 'products' %}"
+                        class="add-cart-btn"
+                    >
+                        View Product
+                    </a>
+
+                </div>
+
+            </article>
+
+            {% endwith %}
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     OUR STORY
+===================================================== -->
+
+<section
+    class="ruhi-story"
+    id="our-story"
+>
+
+    <div class="ruhi-story-container">
+
+
+        <div class="ruhi-story-image">
+
+            <img
+                src="/media/images/dairy-farm.jpg"
+                alt="Ruhi Dairy farm"
+            >
+
+        </div>
+
+
+        <div class="ruhi-story-content">
+
+            <span class="ruhi-small-heading">
+                OUR STORY
+            </span>
+
+            <h2>
+                From healthy farms
+                to happy families.
+            </h2>
+
+            <p>
+                Ruhi Dairy is built around a simple idea —
+                fresh dairy products should be pure, carefully
+                handled and made with responsibility.
+            </p>
+
+            <p>
+                We follow a carefully controlled journey from
+                milk collection and cooling to processing,
+                hygienic packaging and delivery.
+            </p>
+
+            <a
+                href="#milk-process"
+                class="ruhi-story-link"
+            >
+                Discover our process →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PROCESS
+===================================================== -->
+
+<section
+    class="ruhi-process"
+    id="milk-process"
+>
+
+    <div class="ruhi-section-heading">
+
+        <span class="ruhi-small-heading">
+            FROM FARM TO HOME
+        </span>
+
+        <h2>
+            How We Deliver Purity
+        </h2>
+
+        <p>
+            Every step is handled with care, hygiene and attention.
+        </p>
+
+    </div>
+
+
+    <div class="ruhi-process-grid">
+
+
+        <!-- 01 -->
+
+        <article class="ruhi-process-card">
+
+            <div class="ruhi-process-image">
+
+                <img
+                    src="/media/process/milk-extraction.jpg"
+                    alt="Fresh milk extraction"
+                >
+
+                <span class="ruhi-process-number">
+                    01
+                </span>
+
+            </div>
+
+
+            <div class="ruhi-process-content">
+
+                <span class="ruhi-process-icon">
+                    🐃
+                </span>
+
+                <h3>
+                    Milk Extraction
+                </h3>
+
+                <p>
+                    Fresh milk is collected from healthy
+                    buffaloes and cows in a clean environment.
+                </p>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- 02 -->
+
+        <article class="ruhi-process-card">
+
+            <div class="ruhi-process-image">
+
+                <img
+                    src="/media/process/milk-cooling.jpg"
+                    alt="Milk cooling process"
+                >
+
+                <span class="ruhi-process-number">
+                    02
+                </span>
+
+            </div>
+
+
+            <div class="ruhi-process-content">
+
+                <span class="ruhi-process-icon">
+                    ❄️
+                </span>
+
+                <h3>
+                    Milk Cooling
+                </h3>
+
+                <p>
+                    Collected milk is rapidly cooled to
+                    preserve freshness and quality.
+                </p>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- 03 -->
+
+        <article class="ruhi-process-card">
+
+            <div class="ruhi-process-image">
+
+                <img
+                    src="/media/process/milk-processing.jpg"
+                    alt="Modern milk processing"
+                >
+
+                <span class="ruhi-process-number">
+                    03
+                </span>
+
+            </div>
+
+
+            <div class="ruhi-process-content">
+
+                <span class="ruhi-process-icon">
+                    ⚙️
+                </span>
+
+                <h3>
+                    Processing
+                </h3>
+
+                <p>
+                    Modern dairy equipment is used for
+                    controlled processing and quality handling.
+                </p>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- 04 -->
+
+        <article class="ruhi-process-card">
+
+            <div class="ruhi-process-image">
+
+                <img
+                    src="/media/process/milk-packaging.jpg"
+                    alt="Hygienic dairy packaging"
+                >
+
+                <span class="ruhi-process-number">
+                    04
+                </span>
+
+            </div>
+
+
+            <div class="ruhi-process-content">
+
+                <span class="ruhi-process-icon">
+                    🥛
+                </span>
+
+                <h3>
+                    Hygienic Packaging
+                </h3>
+
+                <p>
+                    Dairy products are carefully packed
+                    to preserve freshness.
+                </p>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- 05 -->
+
+        <article class="ruhi-process-card">
+
+            <div class="ruhi-process-image">
+
+                <img
+                    src="/media/process/dairy-delivery.jpg"
+                    alt="Ruhi Dairy delivery"
+                >
+
+                <span class="ruhi-process-number">
+                    05
+                </span>
+
+            </div>
+
+
+            <div class="ruhi-process-content">
+
+                <span class="ruhi-process-icon">
+                    🚚
+                </span>
+
+                <h3>
+                    Delivered Fresh
+                </h3>
+
+                <p>
+                    Carefully handled products are prepared
+                    for their journey to your doorstep.
+                </p>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     DAIRY GALLERY
+===================================================== -->
+
+<section class="ruhi-dairy-gallery">
+
+    <div class="ruhi-section-heading">
+
+        <span class="ruhi-small-heading">
+            INSIDE RUHI DAIRY
+        </span>
+
+        <h2>
+            Where Freshness Begins
+        </h2>
+
+        <p>
+            A closer look at our dairy environment and
+            the care behind every product.
+        </p>
+
+    </div>
+
+
+    <div class="ruhi-gallery-grid">
+
+
+        <div class="ruhi-gallery-item large">
+
+            <img
+                src="/media/images/dairy-farm.jpg"
+                alt="Ruhi Dairy farm"
+            >
+
+            <div class="ruhi-gallery-caption">
+
+                <strong>
+                    Our Dairy Farm
+                </strong>
+
+                <span>
+                    Healthy livestock & natural surroundings
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="ruhi-gallery-item">
+
+            <img
+                src="/media/process/milk-processing.jpg"
+                alt="Dairy processing facility"
+            >
+
+            <div class="ruhi-gallery-caption">
+
+                <strong>
+                    Modern Processing
+                </strong>
+
+                <span>
+                    Controlled dairy processing
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="ruhi-gallery-item">
+
+            <img
+                src="/media/process/milk-extraction.jpg"
+                alt="Milk collection"
+            >
+
+            <div class="ruhi-gallery-caption">
+
+                <strong>
+                    Quality Care
+                </strong>
+
+                <span>
+                    Carefully collected fresh milk
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="ruhi-gallery-item">
+
+            <img
+                src="/media/process/milk-packaging.jpg"
+                alt="Dairy packaging facility"
+            >
+
+            <div class="ruhi-gallery-caption">
+
+                <strong>
+                    Hygienic Packaging
+                </strong>
+
+                <span>
+                    Freshness sealed with care
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="ruhi-gallery-item">
+
+            <img
+                src="/media/process/dairy-delivery.jpg"
+                alt="Ruhi Dairy delivery"
+            >
+
+            <div class="ruhi-gallery-caption">
+
+                <strong>
+                    Fresh Delivery
+                </strong>
+
+                <span>
+                    From dairy to your doorstep
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUALITY
+===================================================== -->
+
+<section class="ruhi-quality">
+
+    <div class="ruhi-quality-content">
+
+        <span class="ruhi-small-heading">
+            THE RUHI PROMISE
+        </span>
+
+        <h2>
+            Freshness you can see.
+            Quality you can trust.
+        </h2>
+
+        <p>
+            We focus on careful sourcing, hygienic handling
+            and thoughtful packaging so that every Ruhi Dairy
+            product reaches your family with freshness intact.
+        </p>
+
+        <a
+            href="{% url 'products' %}"
+            class="ruhi-quality-btn"
+        >
+            Browse Our Products →
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FINAL CTA
+===================================================== -->
+
+<section class="ruhi-final-cta">
+
+    <div>
+
+        <span>
+            FRESH • PURE • RUHI
+        </span>
+
+        <h2>
+            Goodness for every day.
+        </h2>
+
+        <p>
+            Explore our range of fresh dairy products.
+        </p>
+
+        <a href="{% url 'products' %}">
+            Explore Products
+            <span>→</span>
+        </a>
+
+    </div>
+
+</section>
+
+
+{% endblock %}
